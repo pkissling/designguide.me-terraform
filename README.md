@@ -49,3 +49,8 @@ Terraform project to setup required AWS infrastructure for [designguide.me](http
 | ------------------------- | ----------------------- | ---------------------------- |
 | `aws_ses_domain_identity` | `root`                  | Mail domain `designguide.me` |
 | `aws_ses_domain_identity_verification` | `root`                  | Mail domain verification object `designguide.me` |
+
+## Installation
+```
+$ make
+```

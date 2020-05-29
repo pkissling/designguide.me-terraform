@@ -1,5 +1,15 @@
 Terraform project to setup required AWS infrastructure for [designguide.me](https://designguide.me).
 
+# Prerequisites
+## Registered domain in AWS Route53
+  The domain to be used must be registered in your AWS account.
+## AWS access
+  AWS Credentials with sufficient permission must be [setup](https://www.terraform.io/docs/providers/aws/index.html#authentication).
+## Terraform backend
+  Terraform uses an S3 bucket and a DynamoDB table to sync and store the `terraform.state` file. The required resources can be created with command:
+  ```
+  $ make state
+  ```
 # Modules
 ## S3 `module.bucket`
 | Terraform resource type | Terraform resource name | Description            |

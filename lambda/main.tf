@@ -8,8 +8,8 @@ resource "aws_lambda_function" "messages_post" {
   role          = aws_iam_role.messages.arn
   handler       = "index.handler"
 
-  filename         = "../backend/contact_form.zip"
-  source_code_hash = filebase64sha256("../backend/contact_form.zip")
+  filename         = "./lambda/messages.zip"
+  source_code_hash = filebase64sha256("./lambda/messages.zip")
 
   runtime = "nodejs12.x"
 }

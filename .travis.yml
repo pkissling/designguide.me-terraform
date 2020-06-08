@@ -1,0 +1,29 @@
+---
+dist: xenial # Ubuntu 16.04
+language: bash
+
+env:
+  - TF_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version') AWS_DEFAULT_REGION=eu-central-1
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+before_install:
+  # terraform
+  - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
+  - unzip terraform_"$TF_VERSION"_linux_amd64.zip -d download
+  - mv download/terraform ~/bin/
+  - rm terraform_"$TF_VERSION"_linux_amd64.zip
+  - rmdir download
+
+  # aws
+  - wget https://s3.amazonaws.com/aws-cli/awscli-bundle.zip
+  - unzip awscli-bundle.zip -d download
+  - ./download/awscli-bundle/install -b ~/bin/aws
+  - rm -r download
+  - rm awscli-bundle.zip
+
+script:
+  - make # call Makefile with default target

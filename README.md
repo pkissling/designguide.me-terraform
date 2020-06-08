@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pkissling/designguide.me-terraform.svg?branch=master)](https://travis-ci.org/pkissling/designguide.me-terraform)
+
 # [designguide.me](https://designguide.me)
 Terraform project to setup required AWS infrastructure for [designguide.me](https://designguide.me).
 

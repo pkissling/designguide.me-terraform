@@ -28,7 +28,7 @@ resource "aws_s3_bucket" "website_logs" {
   force_destroy = true
 }
 
-# Access policy for public website access
+# Access policy to encforce website access through CDN
 resource "aws_s3_bucket_policy" "website_policy" {
   bucket = aws_s3_bucket.website.id
   policy = data.template_file.website_policy.rendered

@@ -53,6 +53,12 @@ module "gateway" {
   certificate_arn            = module.certificate.certificate_arn
 }
 
+module "iam" {
+  source             = "./iam"
+  domain             = var.domain
+  website_bucket_arn = module.bucket.website_bucket_arn
+}
+
 module "lambda" {
   source                = "./lambda"
   domain                = var.domain

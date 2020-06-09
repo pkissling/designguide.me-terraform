@@ -1,7 +1,14 @@
+# [designguide.me](https://designguide.me)
 [![Build Status](https://travis-ci.org/pkissling/designguide.me-terraform.svg?branch=master)](https://travis-ci.org/pkissling/designguide.me-terraform)
 
-# [designguide.me](https://designguide.me)
-Terraform project to setup required AWS infrastructure for [designguide.me](https://designguide.me).
+## Overview
+Terraform project to setup required AWS infrastructure for [designguide.me](https://designguide.me), which contains:
+- S3 bucket for static website hosting
+- Cloudfront distribution to serve website
+- ACM certificate to serve traffic via https
+- AWS lambda as the backend
+- API gateway to consolidate lambda function
+- Route53 hosted zone for domain and `api.` subdomain
 
 ## Prerequisites
 

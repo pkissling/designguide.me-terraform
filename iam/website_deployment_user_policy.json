@@ -4,11 +4,24 @@
         {
             "Effect": "Allow",
             "Action": [
+                "cloudfront:ListDistributions"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudfront:CreateInvalidation",
+
                 "s3:GetObject",
                 "s3:PutObject",
                 "s3:ListBucket"
             ],
             "Resource": [
+                "${website_cdn_arn}",
+
                 "${website_bucket_arn}",
                 "${website_bucket_arn}/*"
             ]

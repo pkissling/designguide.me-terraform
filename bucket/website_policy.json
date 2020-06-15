@@ -4,7 +4,7 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "${cdn_arn}"
+                "AWS": "${website_cdn_iam_arn}"
             },
             "Action": [
                 "s3:GetObject"

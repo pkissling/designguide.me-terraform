@@ -5,7 +5,7 @@ resource "aws_iam_user" "website_deployment_user" {
 
 # Create access key to allow API access
 resource "aws_iam_access_key" "website_deployment_user_access_key" {
-  user    = aws_iam_user.website_deployment_user.name
+  user = aws_iam_user.website_deployment_user.name
 }
 
 
@@ -23,9 +23,10 @@ resource "aws_iam_user_policy_attachment" "website_deployment" {
 
 # Load policy from file
 data "template_file" "website_deployment_policy" {
-  template = file("${path.module}/website_deployment_policy.json")
+  template = file("${path.module}/website_deployment_user_policy.json")
 
   vars = {
     website_bucket_arn = var.website_bucket_arn
+    website_cdn_arn    = var.website_cdn_arn
   }
 }

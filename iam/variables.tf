@@ -8,3 +8,7 @@ variable "website_bucket_arn" {
   type        = string
 }
 
+variable "website_cdn_arn" {
+  description = "ARN of the website's CDN"
+  type        = string
+}

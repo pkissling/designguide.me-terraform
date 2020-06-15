@@ -15,7 +15,7 @@ provider "aws" {
 module "bucket" {
   source  = "./bucket"
   domain  = var.domain
-  cdn_arn = module.cdn.cdn_arn
+  website_cdn_iam_arn = module.cdn.website_cdn_iam_arn
 }
 
 module "certificate" {
@@ -57,6 +57,7 @@ module "iam" {
   source             = "./iam"
   domain             = var.domain
   website_bucket_arn = module.bucket.website_bucket_arn
+  website_cdn_arn    = module.cdn.website_cdn_arn
 }
 
 module "lambda" {

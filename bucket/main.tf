@@ -40,6 +40,6 @@ data "template_file" "website_policy" {
 
   vars = {
     bucket_arn = aws_s3_bucket.website.arn
-    cdn_arn    = var.cdn_arn
+    website_cdn_iam_arn    = var.website_cdn_iam_arn
   }
 }

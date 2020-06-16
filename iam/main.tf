@@ -1,6 +1,6 @@
 # Website deployment user
 resource "aws_iam_user" "website_deployment_user" {
-  name = "${var.domain}_deployment_user"
+  name = "${var.domain}-website_deployment_user"
 }
 
 # Create access key to allow API access
@@ -11,7 +11,8 @@ resource "aws_iam_access_key" "website_deployment_user_access_key" {
 
 # Website deployment policy
 resource "aws_iam_policy" "website_deployment_policy" {
-  name   = "${var.domain}_deployment"
+  name   = "${var.domain}_website_deployment"
+  description = "S3 sync & Cloudfront invalidation"
   policy = data.template_file.website_deployment_policy.rendered
 }
 

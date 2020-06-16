@@ -36,8 +36,6 @@ module "domain" {
   domain                              = var.domain
   cdn_website_hosted_zone_id          = module.cdn.cdn_website_hosted_zone_id
   cdn_website_domain_name             = module.cdn.cdn_website_domain_name
-  cdn_api_domain_name                 = module.gateway.cdn_api_domain_name
-  cdn_api_hosted_zone_id              = module.gateway.cdn_api_hosted_zone_id
   certificate_validation_record_name  = module.certificate.certificate_validation_record_name
   certificate_validation_record_type  = module.certificate.certificate_validation_record_type
   certificate_validation_record_value = module.certificate.certificate_validation_record_value
@@ -46,24 +44,11 @@ module "domain" {
   mail_domain_validation_record_value = module.mail.mail_domain_validation_record_value
 }
 
-module "gateway" {
-  source                     = "./gateway"
-  domain                     = var.domain
-  lambda_messages_invoke_arn = module.lambda.lambda_messages_invoke_arn
-  certificate_arn            = module.certificate.certificate_arn
-}
-
 module "iam" {
   source             = "./iam"
   domain             = var.domain
   website_bucket_arn = module.bucket.website_bucket_arn
   website_cdn_arn    = module.cdn.website_cdn_arn
-}
-
-module "lambda" {
-  source                = "./lambda"
-  domain                = var.domain
-  gateway_execution_arn = module.gateway.gateway_execution_arn
 }
 
 module "mail" {

@@ -30,19 +30,6 @@ resource "aws_route53_record" "www" {
   }
 }
 
-# Subdomain record api.[...]
-resource "aws_route53_record" "api" {
-  zone_id = aws_route53_zone.root.zone_id
-  name    = "api.${var.domain}"
-  type    = "A"
-
-  alias {
-    name                   = var.cdn_api_domain_name
-    zone_id                = var.cdn_api_hosted_zone_id
-    evaluate_target_health = true
-  }
-}
-
 # Record for cerificate validation
 resource "aws_route53_record" "certificate_validation" {
   zone_id = aws_route53_zone.root.zone_id

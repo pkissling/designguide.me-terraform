@@ -13,16 +13,6 @@ variable "cdn_website_hosted_zone_id" {
   type        = string
 }
 
-variable "cdn_api_hosted_zone_id" {
-  description = "Hosted Zone ID of the API's CDN"
-  type        = string
-}
-
-variable "cdn_api_domain_name" {
-  description = "Domain name of the API's CDN"
-  type        = string
-}
-
 variable "certificate_validation_record_name" {
   description = "DNS record name to validate the certificate via DNS"
   type        = string

@@ -4,6 +4,7 @@
       {
         "Effect": "Allow",
         "Action": [
+          "acm:ListCertificates",
           "apigateway:*",
           "cloudFormation:*",
           "cloudwatch:*",
@@ -11,6 +12,8 @@
           "iam:*",
           "lambda:*",
           "logs:*",
+          "route53:ListHostedZones",
+          "route53:ChangeResourceRecordSets",
           "s3:*"
         ],
         "Resource": "*"

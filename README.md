@@ -81,12 +81,16 @@ Terraform project to setup required AWS infrastructure for [designguide.me](http
 
 ### IAM `module.iam`
 
-| Terraform resource type          | Terraform resource name              | Description                                                                                 |
-| -------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `aws_iam_user`                   | `website_deployment_user`            | IAM user to deploy to `module.bucket.website`                                               |
-| `aws_iam_access_key`             | `website_deployment_user_access_key` | Access key for programmatic access for `aws_iam_user.website_deployment_user`               |
-| `aws_iam_policy`                 | `website_deployment_policy`          | IAM policy to access `module.bucket.website`                                                |
-| `aws_iam_user_policy_attachment` | `website_deployment`                 | Attach `aws_iam_policy.website_deployment_policy` to `aws_iam_user.website_deployment_user` |
+| Terraform resource type          | Terraform resource name                 | Description                                                                                           |
+| -------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `aws_iam_user`                   | `serverless_deployment_user`            | IAM user to deploy [Serverless](https://github.com/pkissling/designguide.me-serverless) via Travis CI |
+| `aws_iam_access_key`             | `serverless_deployment_user_access_key` | Access key for programmatic access for `aws_iam_user.serverless_deployment_user`                      |
+| `aws_iam_policy`                 | `serverless_deployment_policy`          | IAM policy to deploy all required Serverless components                                               |
+| `aws_iam_user_policy_attachment` | `serverless_deployment`                 | Attach `aws_iam_policy.serverless_deployment_policy` to `aws_iam_user.serverless_deployment_user`     |
+| `aws_iam_user`                   | `website_deployment_user`               | IAM user to deploy [SPA](https://github.com/pkissling/designguide.me-vue) via Travis CI               |
+| `aws_iam_access_key`             | `website_deployment_user_access_key`    | Access key for programmatic access for `aws_iam_user.website_deployment_user`                         |
+| `aws_iam_policy`                 | `website_deployment_policy`             | IAM policy to deploy to `module.bucket.website` and invalidate `module.cdn.website`                   |
+| `aws_iam_user_policy_attachment` | `website_deployment`                    | Attach `aws_iam_policy.website_deployment_policy` to `aws_iam_user.website_deployment_user`           |
 
 ### Lambda `module.lambda`
 

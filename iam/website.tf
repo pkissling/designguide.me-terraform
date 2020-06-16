@@ -8,11 +8,10 @@ resource "aws_iam_access_key" "website_deployment_user_access_key" {
   user = aws_iam_user.website_deployment_user.name
 }
 
-
 # Website deployment policy
 resource "aws_iam_policy" "website_deployment_policy" {
   name   = "${var.domain}_website_deployment"
-  description = "S3 sync & Cloudfront invalidation"
+  description = "Full S3, IAM, Lambda, ApiGateway, CloudFront, CloudWatch"
   policy = data.template_file.website_deployment_policy.rendered
 }
 

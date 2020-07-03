@@ -8,7 +8,11 @@ state:
 	aws s3api put-bucket-versioning --bucket $(DOMAIN)-tfstate --versioning-configuration Status=Enabled > /dev/null
 	aws dynamodb list-tables | grep '$(DOMAIN)-tfstate' > /dev/null || aws dynamodb create-table --attribute-definitions AttributeName=LockID,AttributeType=S --table-name $(DOMAIN)-tfstate --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 > /dev/null
 
-init: state
+zip_function: state
+	rm -rf target && mkdir target
+	cd function/src && zip ../../target/deployer.zip deployer.js
+
+init: zip_function
 	terraform init
 
 plan: init

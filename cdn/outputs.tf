@@ -15,5 +15,5 @@ output "website_cdn_iam_arn" {
 
 output "website_cdn_arn" {
   description = "ARN of the website's CDN"
-  value = aws_cloudfront_distribution.website.arn
+  value       = aws_cloudfront_distribution.website.arn
 }

@@ -39,7 +39,8 @@ data "template_file" "website_policy" {
   template = file("${path.module}/website_policy.json")
 
   vars = {
-    bucket_arn = aws_s3_bucket.website.arn
-    website_cdn_iam_arn    = var.website_cdn_iam_arn
+    bucket_arn          = aws_s3_bucket.website.arn
+    website_cdn_iam_arn = var.website_cdn_iam_arn
   }
 }
+

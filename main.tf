@@ -13,8 +13,8 @@ provider "aws" {
 }
 
 module "bucket" {
-  source  = "./bucket"
-  domain  = var.domain
+  source              = "./bucket"
+  domain              = var.domain
   website_cdn_iam_arn = module.cdn.website_cdn_iam_arn
 }
 
@@ -42,6 +42,14 @@ module "domain" {
   mail_domain_validation_record_name  = module.mail.mail_domain_validation_record_name
   mail_domain_validation_record_type  = module.mail.mail_domain_validation_record_type
   mail_domain_validation_record_value = module.mail.mail_domain_validation_record_value
+}
+
+module "function" {
+  source               = "./function"
+  domain               = var.domain
+  functions_src_bucket_arn = module.bucket.functions_src_bucket_arn
+  functions_src_bucket_id  = module.bucket.functions_src_bucket_id
+  logging_policy_arn   = module.iam.logging_policy_arn
 }
 
 module "iam" {

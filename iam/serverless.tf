@@ -10,9 +10,9 @@ resource "aws_iam_access_key" "serverless_deployment_user_access_key" {
 
 # Serverless deployment policy
 resource "aws_iam_policy" "serverless_deployment_policy" {
-  name   = "${var.domain}_serverless_deployment"
+  name        = "${var.domain}-serverless_deployment"
   description = "S3 sync & Cloudfront invalidation"
-  policy = data.template_file.serverless_deployment_policy.rendered
+  policy      = data.template_file.serverless_deployment_policy.rendered
 }
 
 # Link deployment user with policy

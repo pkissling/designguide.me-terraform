@@ -36,10 +36,11 @@
 
 ### S3 `module.bucket`
 
-| Terraform resource type | Terraform resource name | Description            |
-| ----------------------- | ----------------------- | ---------------------- |
-| `aws_s3_bucket`         | `website`               | Website static content |
-| `aws_s3_bucket`         | `website_logs`          | Website access logs    |
+| Terraform resource type | Terraform resource name | Description                            |
+| ----------------------- | ----------------------- | -------------------------------------- |
+| `aws_s3_bucket`         | `functions_src`         | Stores source code of lambda functions |
+| `aws_s3_bucket`         | `website`               | Website static content                 |
+| `aws_s3_bucket`         | `website_logs`          | Website access logs                    |
 
 ### Cloudfront `module.cdn`
 
@@ -71,12 +72,27 @@
 | -------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | `aws_iam_user`                   | `serverless_deployment_user`            | IAM user to deploy [Serverless](https://github.com/pkissling/designguide.me-serverless) via Travis CI |
 | `aws_iam_access_key`             | `serverless_deployment_user_access_key` | Access key for programmatic access for `aws_iam_user.serverless_deployment_user`                      |
-| `aws_iam_policy`                 | `serverless_deployment_policy`          | IAM policy to deploy all required Serverless components                                               |
-| `aws_iam_user_policy_attachment` | `serverless_deployment`                 | Attach `aws_iam_policy.serverless_deployment_policy` to `aws_iam_user.serverless_deployment_user`     |
+| `aws_iam_policy`                 | `serverless_deployment`                 | IAM policy to deploy all required Serverless components                                               |
+| `aws_iam_user_policy_attachment` | `serverless_deployment`                 | Attach `aws_iam_policy.serverless_deployment` to `aws_iam_user.serverless_deployment_user`            |
 | `aws_iam_user`                   | `website_deployment_user`               | IAM user to deploy [SPA](https://github.com/pkissling/designguide.me-vue) via Travis CI               |
 | `aws_iam_access_key`             | `website_deployment_user_access_key`    | Access key for programmatic access for `aws_iam_user.website_deployment_user`                         |
-| `aws_iam_policy`                 | `website_deployment_policy`             | IAM policy to deploy to `module.bucket.website` and invalidate `module.cdn.website`                   |
-| `aws_iam_user_policy_attachment` | `website_deployment`                    | Attach `aws_iam_policy.website_deployment_policy` to `aws_iam_user.website_deployment_user`           |
+| `aws_iam_policy`                 | `website_deployment`                    | IAM policy to deploy to `module.bucket.website` and invalidate `module.cdn.website`                   |
+| `aws_iam_user_policy_attachment` | `website_deployment`                    | Attach `aws_iam_policy.website_deployment` to `aws_iam_user.website_deployment_user`                  |
+| `aws_iam_policy`                 | `logging`                               | IAM policy to allow creation of log groups / streams and to write logs                                |
+
+### Lambda `module.function`
+ | Terraform resource type          | Terraform resource name               | Description                                                                                                                         |
+ | -------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+ | `aws_lambda_function`            | `deployer`                            | Lambda function to retrieve source code of other Lambda functions from `aws_s3_bucket.functions_src` and deploy to `TODO` functions |
+ | `aws_iam_role`                   | `deployer`                            | IAM role of `aws_lambda_function.deployer`                                                                                          |
+ | `aws_lambda_permission`          | `deployer`                            | Allow invocation of `aws_lambda_function.deployer` from `aws_s3_bucket.functions_src`                                               |
+ | `aws_s3_bucket_notification`     | `deployer`                            | Trigger `aws_lambda_function.deployer` from `aws_s3_bucket.functions_src`                                                           |
+ | `aws_iam_policy`                 | `update_functions`                    | Allow `aws_lambda_function.deployer` to update `aws_lambda_function.TODO` and `aws_lambda_function.TODO`                            |
+ | `aws_iam_role_policy_attachment` | `update_functions`                    | Attach `aws_iam_policy.update_functions` to `aws_lambda_function.deployer`                                                          |
+ | `aws_iam_policy`                 | `access_functions_source_code_bucket` | Allow `aws_lambda_function.deployer` to access `aws_s3_bucket.functions_src`                                                        |
+ | `aws_iam_role_policy_attachment` | `access_functions_source_code_bucket` | Attach `aws_iam_policy.access_functions_source_code_bucket` to `aws_lambda_function.deployer`                                       |
+ | `aws_cloudwatch_log_group`       | `deployer_logging`                    | Enable Cloudwatch logging for `aws_lambda_function.deployer`                                                                        |
+ | `aws_iam_role_policy_attachment` | `deployer_logs`                       | Attach `module.iam.logging` to `aws_lambda_function.deployer`                                                                       |
 
 ### SES `module.mail`
 

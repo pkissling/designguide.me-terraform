@@ -13,3 +13,12 @@ output "website_bucket_arn" {
   value       = aws_s3_bucket.website.arn
 }
 
+output "functions_src_bucket_id" {
+  description = "ID of the bucket containing lambda functions source code"
+  value       = aws_s3_bucket.functions_src.id
+}
+
+output "functions_src_bucket_arn" {
+  description = "ARN of the bucket containing lambda functions source code"
+  value       = aws_s3_bucket.functions_src.arn
+}

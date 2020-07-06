@@ -5,3 +5,13 @@ variable "aws_region" {
 variable "domain" {
   description = "The site's domain"
 }
+
+variable "mail_messages_from" {
+  description = "Sender mail address when sending emails from Lambda"
+  type        = string
+}
+
+variable "mail_messages_to" {
+  description = "Recipient mail address when sending emails from Lambda"
+  type        = string
+}

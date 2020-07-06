@@ -3,9 +3,21 @@ resource "aws_iam_policy" "logging" {
   path        = "/"
   description = "Create log groups and log messages"
 
-  policy = data.template_file.logging_policy.rendered
+  policy = data.aws_iam_policy_document.logging_policy.json
 }
 
-data "template_file" "logging_policy" {
-  template = file("${path.module}/logging_policy.json")
+data "aws_iam_policy_document" "logging_policy" {
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents"
+    ]
+
+    resources = ["arn:aws:logs:*:*:*"]
+  }
 }

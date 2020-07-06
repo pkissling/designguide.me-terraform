@@ -1,5 +1,7 @@
 DOMAIN := designguide.me
 AWS_DEFAULT_REGION ?= eu-central-1
+MAIL_MESSAGES_TO ?= dummy@dummy.de  # Overwritten by Travis CI env vars
+MAIL_MESSAGES_FROM ?= dummy@dummy.de  # Overwritten by Travis CI env vars
 
 default: apply
 
@@ -16,7 +18,7 @@ init: zip_function
 	terraform init
 
 plan: init
-	terraform plan -var 'domain=$(DOMAIN)' -var 'aws_region=$(AWS_DEFAULT_REGION)'
+	terraform plan -var 'domain=$(DOMAIN)' -var 'aws_region=$(AWS_DEFAULT_REGION)' -var 'mail_messages_from=$(MAIL_MESSAGES_FROM)' -var 'mail_messages_to=$(MAIL_MESSAGES_TO)'
 
 apply: init
-	terraform apply -auto-approve -var 'domain=$(DOMAIN)' -var 'aws_region=$(AWS_DEFAULT_REGION)'
+	terraform apply -auto-approve -var 'domain=$(DOMAIN)' -var 'aws_region=$(AWS_DEFAULT_REGION)' -var 'mail_messages_from=$(MAIL_MESSAGES_FROM)' -var 'mail_messages_to=$(MAIL_MESSAGES_TO)'

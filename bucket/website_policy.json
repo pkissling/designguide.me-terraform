@@ -4,12 +4,12 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "${website_cdn_iam_arn}"
+                "AWS": "${cdn_website_iam_arn}"
             },
             "Action": [
                 "s3:GetObject"
             ],
-            "Resource": "${bucket_arn}/*"
+            "Resource": "${bucket_website_arn}/*"
         }
     ]
 }

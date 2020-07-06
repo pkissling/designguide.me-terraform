@@ -20,10 +20,10 @@
                 "s3:ListBucket"
             ],
             "Resource": [
-                "${website_cdn_arn}",
+                "${cdn_website_arn}",
 
-                "${website_bucket_arn}",
-                "${website_bucket_arn}/*"
+                "${bucket_website_arn}",
+                "${bucket_website_arn}/*"
             ]
         }
     ]

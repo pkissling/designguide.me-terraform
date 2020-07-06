@@ -39,11 +39,14 @@
 
 ### S3 `module.bucket`
 
-| Terraform resource type | Terraform resource name | Description                            |
-| ----------------------- | ----------------------- | -------------------------------------- |
-| `aws_s3_bucket`         | `functions_src`         | Stores source code of lambda functions |
-| `aws_s3_bucket`         | `website`               | Website static content                 |
-| `aws_s3_bucket`         | `website_logs`          | Website access logs                    |
+| Terraform resource type | Terraform resource name | Description                                                                                        |
+| ----------------------- | ----------------------- | -------------------------------------------------------------------------------------------------- |
+| `aws_s3_bucket`         | `functions_src`         | Stores source code of lambda functions                                                             |
+| `aws_s3_bucket`         | `website`               | Website static content                                                                             |
+| `aws_s3_bucket_policy`  | `website`               | Make `aws_s3_bucket.website` only accessible from `module.cdn.aws_cloudfront_distribution.website` |
+| `aws_s3_bucket`         | `website_logs`          | Website access logs                                                                                |
+| `aws_s3_bucket`         | `incoming_mails`        | Contains incoming mails from `module.mail.aws_ses_receipt_rule.mail_to_s3`                         |
+| `aws_s3_bucket_policy`  | `incoming_mails`        | Allow `module.mail.aws_ses_receipt_rule.mail_to_s3` to write to `aws_s3_bucket.incoming_mails`     |
 
 ### Cloudfront `module.cdn`
 
@@ -60,32 +63,33 @@
 
 ### Route53 `module.domain`
 
-| Terraform resource type | Terraform resource name  | Description                                                        |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------ |
-| `aws_route53_zone`      | `root`                   | Hosted zone `designguide.me`                                       |
-| `aws_route53_record`    | `root`                   | DNS record `designguide.me`                                        |
-| `aws_route53_record`    | `www`                    | DNS record `www.designguide.me`                                    |
-| `aws_route53_record`    | `api`                    | DNS record `api.designguide.me`                                    |
-| `aws_route53_record`    | `certificate_validation` | DNS record to validate certificate `aws_acm_certificate.root`      |
-| `aws_route53_record`    | `mail_domain_validation` | DNS record to validate email domain `aws_ses_domain_identity.root` |
+| Terraform resource type | Terraform resource name    | Description                                                                               |
+| ----------------------- | -------------------------- | ----------------------------------------------------------------------------------------- |
+| `aws_route53_zone`      | `root`                     | Hosted zone `designguide.me`                                                              |
+| `aws_route53_record`    | `root`                     | DNS record `designguide.me`                                                               |
+| `aws_route53_record`    | `www`                      | DNS record `www.designguide.me`                                                           |
+| `aws_route53_record`    | `api`                      | DNS record `api.designguide.me`                                                           |
+| `aws_route53_record`    | `certificate_validation`   | DNS record to validate certificate `aws_acm_certificate.root`                             |
+| `aws_route53_record`    | `mail_identity_validation` | DNS record to validate email identity `aws_ses_domain_identity.root`                      |
+| `aws_route53_record`    | `mail_receiver_validation` | DNS record to allow receiving `module.mail.aws_ses_domain_identity.root` to receive mails |
 
 ### API Gateway `module.gateway`
 
-| Terraform resource type             | Terraform resource name | Description                                                                                                                                                                                   |
-| ----------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `aws_api_gateway_rest_api`          | `root`                  | REST API for `designguide.me`                                                                                                                                                                 |
-| `aws_api_gateway_resource`          | `messages`              | API resource `messages`                                                                                                                                                                       |
-| `aws_api_gateway_method`            | `messages_post`         | API method `POST messages`                                                                                                                                                                    |
-| `aws_api_gateway_integration`       | `messages_post`         | Link between `module.lambda.messages_post` and `module.gateway.aws_api_gateway_method.messages_post `                                                                                         |
-| `aws_api_gateway_method`            | `messages_options`      | API method `OPTIONS messages`                                                                                                                                                                 |
-| `aws_api_gateway_integration`       | `messages_options`      | Link between `module.lambda.messages_options` and `module.gateway.aws_api_gateway_method.messages_post `                                                                                      |
-| `aws_api_gateway_deployment`        | `v1`                    | API stage `v1`                                                                                                                                                                                |
-| `aws_api_gateway_domain_name`       | `api`                   | Custom domain name `api.designguide.me`                                                                                                                                                       |
-| `aws_api_gateway_base_path_mapping` | `v1`                    | Map custom domain name `module.gateway.aws_api_gateway_domain_name.api` with REST API `module.gateway.aws_api_gateway_rest_api.root` and stage `module.gateway.aws_api_gateway_deployment.v1` |
-| `aws_iam_role`                      | `root`                  | IAM role of `aws_api_gateway_rest_api.root`                                                                                                                                                   |
-| `aws_api_gateway_account`           | `root`                  | Account settings. Required to enable Cloudwatch logging                                                                                                                                       |
-| `aws_iam_role_policy_attachment`    | `logging`               | Attach `aws_iam_policy` to `aws_iam_role.root` to allow logging                                                                                                                               |
-| `aws_api_gateway_method_settings`   | `settings`              | Set throttling and logging for `aws_api_gateway_rest_api.root`                                                                                                                                |
+| Terraform resource type             | Terraform resource name | Description                                                                                                                                      |
+| ----------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `aws_api_gateway_rest_api`          | `root`                  | REST API for `designguide.me`                                                                                                                    |
+| `aws_api_gateway_resource`          | `messages`              | API resource `messages`                                                                                                                          |
+| `aws_api_gateway_method`            | `messages_post`         | API method `POST messages`                                                                                                                       |
+| `aws_api_gateway_integration`       | `messages_post`         | Link between `module.function.aws_lambda_function.messages_post` and `aws_api_gateway_method.messages_post `                                     |
+| `aws_api_gateway_method`            | `messages_options`      | API method `OPTIONS messages`                                                                                                                    |
+| `aws_api_gateway_integration`       | `messages_options`      | Link between `module.function.aws_lambda_function.messages_options` and `aws_api_gateway_method.messages_post `                                  |
+| `aws_api_gateway_deployment`        | `v1`                    | API stage `v1`                                                                                                                                   |
+| `aws_api_gateway_domain_name`       | `api`                   | Custom domain name `api.designguide.me`                                                                                                          |
+| `aws_api_gateway_base_path_mapping` | `v1`                    | Map custom domain name `aws_api_gateway_domain_name.api` with REST API `aws_api_gateway_rest_api.root` and stage `aws_api_gateway_deployment.v1` |
+| `aws_iam_role`                      | `root`                  | IAM role of `aws_api_gateway_rest_api.root`                                                                                                      |
+| `aws_api_gateway_account`           | `root`                  | Account settings. Required to enable Cloudwatch logging                                                                                          |
+| `aws_iam_role_policy_attachment`    | `logging`               | Attach `aws_iam_policy` to `aws_iam_role.root` to allow logging                                                                                  |
+| `aws_api_gateway_method_settings`   | `settings`              | Set throttling and logging for `aws_api_gateway_rest_api.root`                                                                                   |
 
 ### Lambda `module.function`
  | Terraform resource type          | Terraform resource name               | Description                                                                                                                                                         |
@@ -98,37 +102,47 @@
  | `aws_iam_role`                   | `messages_options`                    | IAM role of `aws_lambda_function.options`                                                                                                                           |
  | `aws_lambda_permission`          | `deployer`                            | Allow invocation of `aws_lambda_function.deployer` from `aws_s3_bucket.functions_src`                                                                               |
  |                                  |
- | `aws_lambda_permission`          | `messages_post`                       | Allow invocation of `aws_lambda_function.messages_post` from `module.gateway.messages_post`                                                                         |
- | `aws_lambda_permission`          | `messages_options`                    | Allow invocation of `aws_lambda_function.messages_options` from `module.gateway.messages_options`                                                                   |
+ | `aws_lambda_permission`          | `messages_post`                       | Allow invocation of `aws_lambda_function.messages_post` from `module.gateway.aws_api_gateway_method.messages_post`                                                  |
+ | `aws_lambda_permission`          | `messages_options`                    | Allow invocation of `aws_lambda_function.messages_options` from `module.gateway.aws_api_gateway_method.messages_options`                                            |
  | `aws_s3_bucket_notification`     | `deployer`                            | Trigger `aws_lambda_function.deployer` from `aws_s3_bucket.functions_src`                                                                                           |
  | `aws_iam_policy`                 | `update_functions`                    | Allow `aws_lambda_function.deployer` to update `aws_lambda_function.messages_post` and `aws_lambda_function.messages_options`                                       |
  | `aws_iam_role_policy_attachment` | `update_functions`                    | Attach `aws_iam_policy.update_functions` to `aws_lambda_function.deployer`                                                                                          |
  | `aws_iam_policy`                 | `access_functions_source_code_bucket` | Allow `aws_lambda_function.deployer` to access `aws_s3_bucket.functions_src`                                                                                        |
  | `aws_iam_role_policy_attachment` | `access_functions_source_code_bucket` | Attach `aws_iam_policy.access_functions_source_code_bucket` to `aws_lambda_function.deployer`                                                                       |
  | `aws_cloudwatch_log_group`       | `deployer_logging`                    | Enable Cloudwatch logging for `aws_lambda_function.deployer`                                                                                                        |
- | `aws_iam_role_policy_attachment` | `deployer_logs`                       | Attach `module.iam.logging` to `aws_lambda_function.deployer`                                                                                                       |
- | `aws_iam_role_policy_attachment` | `messages_post_send_emails`           | Attach `aws_iam_policy.send_mails` to `aws_lambda_function.messages_post` to allow function to send mails                                                           |
+ | `aws_iam_role_policy_attachment` | `deployer_logs`                       | Attach `module.iam.aws_iam_policy.logging` to `aws_lambda_function.deployer`                                                                                        |
+ | `aws_iam_role_policy_attachment` | `messages_post_send_emails`           | Attach `aws_iam_policy.send_mails` to `module.function.aws_lambda_function.messages_post` to allow function sending mails                                           |
 
 ### IAM `module.iam`
 
-| Terraform resource type          | Terraform resource name                 | Description                                                                                           |
-| -------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `aws_iam_user`                   | `serverless_deployment_user`            | IAM user to deploy [Serverless](https://github.com/pkissling/designguide.me-serverless) via Travis CI |
-| `aws_iam_access_key`             | `serverless_deployment_user_access_key` | Access key for programmatic access for `aws_iam_user.serverless_deployment_user`                      |
-| `aws_iam_policy`                 | `serverless_deployment`                 | IAM policy to deploy all required Serverless components                                               |
-| `aws_iam_user_policy_attachment` | `serverless_deployment`                 | Attach `aws_iam_policy.serverless_deployment` to `aws_iam_user.serverless_deployment_user`            |
-| `aws_iam_user`                   | `website_deployment_user`               | IAM user to deploy [SPA](https://github.com/pkissling/designguide.me-vue) via Travis CI               |
-| `aws_iam_access_key`             | `website_deployment_user_access_key`    | Access key for programmatic access for `aws_iam_user.website_deployment_user`                         |
-| `aws_iam_policy`                 | `website_deployment`                    | IAM policy to deploy to `module.bucket.website` and invalidate `module.cdn.website`                   |
-| `aws_iam_user_policy_attachment` | `website_deployment`                    | Attach `aws_iam_policy.website_deployment` to `aws_iam_user.website_deployment_user`                  |
-| `aws_iam_policy`                 | `logging`                               | IAM policy to allow creation of log groups / streams and to write logs                                |
-| `aws_iam_policy`                 | `send_emails`                           | IAM policy to allow sendings emails from `module.mail.root`                                           |
+| Terraform resource type          | Terraform resource name                 | Description                                                                                                                   |
+| -------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `aws_iam_user`                   | `serverless_deployment_user`            | IAM user to deploy [Serverless](https://github.com/pkissling/designguide.me-serverless) via Travis CI                         |
+| `aws_iam_access_key`             | `serverless_deployment_user_access_key` | Access key for programmatic access for `aws_iam_user.serverless_deployment_user`                                              |
+| `aws_iam_policy`                 | `serverless_deployment`                 | IAM policy to deploy all required Serverless components                                                                       |
+| `aws_iam_user_policy_attachment` | `serverless_deployment`                 | Attach `aws_iam_policy.serverless_deployment` to `aws_iam_user.serverless_deployment_user`                                    |
+| `aws_iam_user`                   | `website_deployment_user`               | IAM user to deploy [SPA](https://github.com/pkissling/designguide.me-vue) via Travis CI                                       |
+| `aws_iam_access_key`             | `website_deployment_user_access_key`    | Access key for programmatic access for `aws_iam_user.website_deployment_user`                                                 |
+| `aws_iam_policy`                 | `website_deployment`                    | IAM policy to deploy to `module.bucket.aws_s3_bucket.website` and invalidate `module.cdn.aws_cloudfront_distribution.website` |
+| `aws_iam_user_policy_attachment` | `website_deployment`                    | Attach `aws_iam_policy.website_deployment` to `aws_iam_user.website_deployment_user`                                          |
+| `aws_iam_policy`                 | `logging`                               | IAM policy to allow creation of log groups / streams and to write logs                                                        |
+| `aws_iam_policy`                 | `send_emails`                           | IAM policy to allow sendings emails from `module.mail.root`                                                                   |
 
 
 ### SES `module.mail`
 
-| Terraform resource type                | Terraform resource name | Description                                                                         |
-| -------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------- |
-| `aws_ses_domain_identity`              | `root`                  | Mail domain `designguide.me`                                                        |
-| `aws_ses_domain_identity_verification` | `root`                  | Mail domain verification object `designguide.me`                                    |
-| `aws_ses_email_identity`               | `recipient`             | Recipient mail address when sending emails from `aws_lambda_function.messages_post` |
+| Terraform resource type                | Terraform resource name | Description                                                          |
+| -------------------------------------- | ----------------------- | -------------------------------------------------------------------- |
+| `aws_ses_domain_identity`              | `root`                  | Mail domain `designguide.me`                                         |
+| `aws_ses_domain_identity_verification` | `root`                  | Mail domain verification object for `designguide.me`                 |
+| `aws_ses_email_identity`               | `recipient`             | Verified email identity to send emails to                            |
+| `aws_ses_receipt_rule_set`             | `default`               | Default SES rule set                                                 |
+| `aws_ses_active_receipt_rule_set`      | `default`               | Make `aws_ses_receipt_rule_set.default` active                       |
+| `aws_ses_receipt_rule`                 | `mail_to_s3`            | Write incoming mails to `module.bucket.aws_s3_bucket.incoming_mails` |
+
+
+### Utilities `module.utilities`
+| Terraform resource type | Terraform resource name | Description                                                                    |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------------ |
+| `aws_caller_identity`   | `current`               | Current AWS identity, holding information associated with the current account. |
+|                         |

@@ -3,12 +3,12 @@ variable "domain" {
   type        = string
 }
 
-variable "website_bucket_id" {
+variable "bucket_website_id" {
   description = "ID of the website's bucket"
   type        = string
 }
 
-variable "website_domain_name" {
+variable "bucket_website_domain_name" {
   description = "Domain name of the website's bucket"
   type        = string
 }

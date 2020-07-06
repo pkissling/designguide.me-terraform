@@ -35,12 +35,12 @@ resource "aws_lambda_permission" "deployer" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.deployer.arn
   principal     = "s3.amazonaws.com"
-  source_arn    = var.functions_src_bucket_arn
+  source_arn    = var.bucket_functions_src_arn
 }
 
 # Define events in S3 triggering the linked function
 resource "aws_s3_bucket_notification" "deployer" {
-  bucket = var.functions_src_bucket_id
+  bucket = var.bucket_functions_src_id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.deployer.arn
@@ -85,7 +85,7 @@ resource "aws_iam_role_policy_attachment" "access_functions_source_code_bucket" 
 data "aws_iam_policy_document" "access_functions_source_code_bucket" {
   statement {
     actions   = ["s3:Get*"]
-    resources = ["${var.functions_src_bucket_arn}/*"]
+    resources = ["${var.bucket_functions_src_arn}/*"]
   }
 }
 
@@ -97,5 +97,5 @@ resource "aws_cloudwatch_log_group" "deployer_logging" {
 # Attach policy for Cloudwatch logging
 resource "aws_iam_role_policy_attachment" "deployer_logs" {
   role       = aws_iam_role.deployer.name
-  policy_arn = var.logging_policy_arn
+  policy_arn = var.policy_logging_arn
 }

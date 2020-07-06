@@ -30,8 +30,8 @@ data "aws_iam_policy_document" "serverless_deployment_policy" {
     ]
 
     resources = [
-      "${var.functions_src_bucket_arn}",
-      "${var.functions_src_bucket_arn}/*"
+      "${var.bucket_functions_src_arn}",
+      "${var.bucket_functions_src_arn}/*"
     ]
   }
 }

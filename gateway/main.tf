@@ -126,5 +126,5 @@ data "aws_iam_policy_document" "root" {
 # Attach policy for Cloudwatch logging
 resource "aws_iam_role_policy_attachment" "logging" {
   role       = aws_iam_role.root.name
-  policy_arn = var.logging_policy_arn
+  policy_arn = var.policy_logging_arn
 }

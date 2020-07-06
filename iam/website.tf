@@ -26,7 +26,7 @@ data "template_file" "website_deployment" {
   template = file("${path.module}/website_deployment_user_policy.json")
 
   vars = {
-    website_bucket_arn = var.website_bucket_arn
-    website_cdn_arn    = var.website_cdn_arn
+    bucket_website_arn = var.bucket_website_arn
+    cdn_website_arn    = var.cdn_website_arn
   }
 }

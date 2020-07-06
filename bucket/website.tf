@@ -29,18 +29,18 @@ resource "aws_s3_bucket" "website_logs" {
 }
 
 # Access policy to encforce website access through CDN
-resource "aws_s3_bucket_policy" "website_policy" {
+resource "aws_s3_bucket_policy" "website" {
   bucket = aws_s3_bucket.website.id
-  policy = data.template_file.website_policy.rendered
+  policy = data.template_file.website.rendered
 }
 
 # Load policy from file
-data "template_file" "website_policy" {
+data "template_file" "website" {
   template = file("${path.module}/website_policy.json")
 
   vars = {
-    bucket_arn          = aws_s3_bucket.website.arn
-    website_cdn_iam_arn = var.website_cdn_iam_arn
+    bucket_website_arn  = aws_s3_bucket.website.arn
+    cdn_website_iam_arn = var.cdn_website_iam_arn
   }
 }
 

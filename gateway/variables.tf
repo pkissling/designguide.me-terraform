@@ -18,7 +18,7 @@ variable "certificate_arn" {
   type        = string
 }
 
-variable "logging_policy_arn" {
+variable "policy_logging_arn" {
   description = "ARN of the policy to log in Cloudwatch"
   type        = string
 }

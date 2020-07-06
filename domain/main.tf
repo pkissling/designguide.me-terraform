@@ -52,8 +52,8 @@ resource "aws_route53_record" "certificate_validation" {
   ttl     = 60
 }
 
-# Record for email domain validation
-resource "aws_route53_record" "mail_domain_validation" {
+# Record for email identity validation
+resource "aws_route53_record" "mail_identity_validation" {
   zone_id = aws_route53_zone.root.zone_id
   name    = var.mail_domain_validation_record_name
   type    = var.mail_domain_validation_record_type
@@ -61,9 +61,18 @@ resource "aws_route53_record" "mail_domain_validation" {
   ttl     = 60
 }
 
+# Record to allow receiving mails
+resource "aws_route53_record" "mail_receiver_validation" {
+  zone_id = aws_route53_zone.root.zone_id
+  name    = var.domain
+  type    = "MX"
+  ttl     = "300"
+  records = ["10 inbound-smtp.eu-west-1.amazonaws.com"] # Static value
+}
+
 # https://github.com/terraform-providers/terraform-provider-aws/issues/88
 # Workaround to manipulate domain nameservers after creation of zone
-resource "null_resource" "updatens-domain" {
+resource "null_resource" "update_domains" {
   provisioner "local-exec" {
     command = "aws route53domains update-domain-nameservers --region us-east-1 --domain-name ${var.domain} --nameservers Name=${aws_route53_zone.root.name_servers.0} Name=${aws_route53_zone.root.name_servers.1} Name=${aws_route53_zone.root.name_servers.2} Name=${aws_route53_zone.root.name_servers.3}"
   }

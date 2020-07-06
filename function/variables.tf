@@ -3,28 +3,28 @@ variable "domain" {
   type        = string
 }
 
-variable "functions_src_bucket_arn" {
+variable "bucket_functions_src_arn" {
   description = "ARN of the bucket containing lambda functions source code"
   type        = string
 }
 
-variable "functions_src_bucket_id" {
+variable "bucket_functions_src_id" {
   description = "ID of the bucket containing lambda functions source code"
   type        = string
 }
 
-variable "logging_policy_arn" {
+variable "policy_logging_arn" {
   description = "ARN of the policy to log in Cloudwatch"
+  type        = string
+}
+
+variable "policy_send_email_arn" {
+  description = "ARN of the policy to send emails"
   type        = string
 }
 
 variable "gateway_execution_arn" {
   description = "Execution ARN of the gateway"
-  type        = string
-}
-
-variable "send_email_policy_arn" {
-  description = "ARN of the policy to send emails"
   type        = string
 }
 

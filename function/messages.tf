@@ -5,7 +5,7 @@ resource "aws_lambda_function" "messages_post" {
   handler       = "messages-post.handler"
   runtime       = "nodejs12.x"
 
-  s3_bucket = var.functions_src_bucket_id
+  s3_bucket = var.bucket_functions_src_id
   s3_key    = "designguide-me_messages-post.zip"
 
   environment {
@@ -23,7 +23,7 @@ resource "aws_lambda_function" "messages_options" {
   handler       = "messages-options.handler"
   runtime       = "nodejs12.x"
 
-  s3_bucket = var.functions_src_bucket_id
+  s3_bucket = var.bucket_functions_src_id
   s3_key    = "designguide-me_messages-options.zip"
 }
 
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_log_group" "messages_post_logging" {
 # Attach policy for Cloudwatch logging
 resource "aws_iam_role_policy_attachment" "messages_post_logging" {
   role       = aws_iam_role.messages_post.name
-  policy_arn = var.logging_policy_arn
+  policy_arn = var.policy_logging_arn
 }
 
 # Log function output to CloudWatch
@@ -76,13 +76,13 @@ resource "aws_cloudwatch_log_group" "messages_options_logging" {
 # Attach policy for Cloudwatch logging
 resource "aws_iam_role_policy_attachment" "messages_options_logging" {
   role       = aws_iam_role.messages_options.name
-  policy_arn = var.logging_policy_arn
+  policy_arn = var.policy_logging_arn
 }
 
 # Allow POST /messages to send emails
 resource "aws_iam_role_policy_attachment" "messages_post_send_emails" {
   role       = aws_iam_role.messages_post.name
-  policy_arn = var.send_email_policy_arn
+  policy_arn = var.policy_send_email_arn
 }
 
 # IAM Policy for both functions

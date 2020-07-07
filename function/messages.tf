@@ -11,7 +11,7 @@ resource "aws_lambda_function" "messages_post" {
   environment {
     variables = {
       TO_MAIL   = var.mail_messages_to
-      FROM_MAIL = var.mail_messages_from
+      FROM_MAIL = "mailer@${var.domain}"
     }
   }
 }

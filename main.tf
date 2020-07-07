@@ -50,7 +50,6 @@ module "domain" {
 module "function" {
   source                   = "./function"
   domain                   = var.domain
-  mail_messages_from       = var.mail_messages_from
   mail_messages_to         = var.mail_messages_to
   bucket_functions_src_arn = module.bucket.bucket_functions_src_arn
   bucket_functions_src_id  = module.bucket.bucket_functions_src_id

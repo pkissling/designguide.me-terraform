@@ -28,11 +28,6 @@ variable "gateway_execution_arn" {
   type        = string
 }
 
-variable "mail_messages_from" {
-  description = "Sender mail address when sending emails from Lambda"
-  type        = string
-}
-
 variable "mail_messages_to" {
   description = "Recipient mail address when sending emails from Lambda"
   type        = string

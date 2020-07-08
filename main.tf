@@ -61,6 +61,7 @@ module "function" {
   policy_update_functions_arn                    = module.iam.policy_update_functions_arn
   policy_access_functions_source_code_bucket_arn = module.iam.policy_access_functions_source_code_bucket_arn
   policy_access_incoming_mails_bucket_arn        = module.iam.policy_access_incoming_mails_bucket_arn
+  aws_account_id                                 = module.utilities.aws_account_id
 }
 
 module "gateway" {

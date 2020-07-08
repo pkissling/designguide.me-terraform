@@ -37,12 +37,10 @@ data "aws_iam_policy_document" "mail_forwarder" {
 
 # Allow exceution of function from SES
 resource "aws_lambda_permission" "mail_forwarder" {
-
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.mail_forwarder.arn
-  principal     = "ses.amazonaws.com"
-  # source_arn    = var.bucket_functions_src_arn
-  # TODO
+  action         = "lambda:InvokeFunction"
+  function_name  = aws_lambda_function.mail_forwarder.arn
+  principal      = "ses.amazonaws.com"
+  source_account = var.aws_account_id
 }
 
 # Allow mail_forwarder to send emails
@@ -55,7 +53,6 @@ resource "aws_iam_role_policy_attachment" "mail_forwarder_access_incoming_mails_
   role       = aws_iam_role.mail_forwarder.name
   policy_arn = var.policy_access_incoming_mails_bucket_arn
 }
-
 
 # Log function output to CloudWatch
 resource "aws_cloudwatch_log_group" "mail_forwarder_logging" {

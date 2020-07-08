@@ -24,7 +24,6 @@ data "aws_iam_policy_document" "incoming_mails" {
       type        = "Service"
       identifiers = ["ses.amazonaws.com"]
     }
-    // TODO
 
     condition {
       test     = "StringEquals"

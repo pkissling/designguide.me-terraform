@@ -57,3 +57,8 @@ variable "policy_access_incoming_mails_bucket_arn" {
   description = "ARN of policy to access bucket where incoming mails are stored"
   type        = string
 }
+
+variable "aws_account_id" {
+  description = "The current AWS account ID"
+  type        = string
+}

@@ -6,7 +6,7 @@ resource "aws_lambda_function" "messages_post" {
   runtime       = "nodejs12.x"
 
   s3_bucket = var.bucket_functions_src_id
-  s3_key    = "designguide-me_messages-post.zip"
+  s3_key    = "${local.domain_name_lambda_regex}_messages-post.zip"
 
   environment {
     variables = {
@@ -24,7 +24,7 @@ resource "aws_lambda_function" "messages_options" {
   runtime       = "nodejs12.x"
 
   s3_bucket = var.bucket_functions_src_id
-  s3_key    = "designguide-me_messages-options.zip"
+  s3_key    = "${local.domain_name_lambda_regex}_messages-options.zip"
 }
 
 # IAM policy for POST /messages function

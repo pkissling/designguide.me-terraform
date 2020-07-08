@@ -27,3 +27,8 @@ output "bucket_incoming_mails_id" {
   description = "ID of the bucket containing incoming mails"
   value       = aws_s3_bucket.incoming_mails.id
 }
+
+output "bucket_incoming_mails_arn" {
+  description = "ARN of the bucket containing incoming mails"
+  value       = aws_s3_bucket.incoming_mails.arn
+}

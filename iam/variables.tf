@@ -27,3 +27,23 @@ variable "mail_email_identity_arn" {
   description = "ARN of the actual mail's email identity"
   type        = string
 }
+
+variable "lambda_messages_post_arn" {
+  description = "ARN of POST /messages Lambda function"
+  type        = string
+}
+
+variable "lambda_messages_options_arn" {
+  description = "ARN of OPTIONS /messages Lambda function"
+  type        = string
+}
+
+variable "lambda_mail_forwarder_arn" {
+  description = "ARN to Lambda function to forward mails"
+  type        = string
+}
+
+variable "bucket_incoming_mails_arn" {
+  description = "ARN of the bucket containing incoming mails"
+  type        = string
+}

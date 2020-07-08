@@ -1,10 +1,24 @@
 output "lambda_messages_post_invoke_arn" {
-  description = "ARN to execute the POST /messages Lambda function"
+  description = "ARN to invoke POST /messages Lambda function"
   value       = aws_lambda_function.messages_post.invoke_arn
 }
 
+output "lambda_messages_post_arn" {
+  description = "ARN of POST /messages Lambda function"
+  value       = aws_lambda_function.messages_post.arn
+}
+
 output "lambda_messages_options_invoke_arn" {
-  description = "ARN to execute the OPTIONS /messages Lambda function"
+  description = "ARN to invoke OPTIONS /messages Lambda function"
   value       = aws_lambda_function.messages_options.invoke_arn
 }
 
+output "lambda_messages_options_arn" {
+  description = "ARN of OPTIONS /messages Lambda function"
+  value       = aws_lambda_function.messages_options.arn
+}
+
+output "lambda_mail_forwarder_arn" {
+  description = "ARN of Lambda function to forward mails"
+  value       = aws_lambda_function.mail_forwarder.arn
+}

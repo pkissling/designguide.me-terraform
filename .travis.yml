@@ -3,7 +3,7 @@ dist: xenial # Ubuntu 16.04
 language: bash
 
 env:
-  - TF_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version') AWS_DEFAULT_REGION=eu-central-1
+  - TF_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version') AWS_DEFAULT_REGION=eu-west-1
 
 notifications:
   email:

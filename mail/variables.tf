@@ -12,3 +12,8 @@ variable "bucket_incoming_mails_id" {
   description = "ID of the bucket containing incoming mails"
   type        = string
 }
+
+variable "lambda_mail_forwarder_arn" {
+  description = "ARN to Lambda function to forward mails"
+  type        = string
+}

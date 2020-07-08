@@ -48,45 +48,22 @@ resource "aws_s3_bucket_notification" "deployer" {
   }
 }
 
-# Allow deployer function to update other functions
-resource "aws_iam_policy" "update_functions" {
-  name        = "${var.domain}-update_lambda_functions"
-  path        = "/"
-  description = "Update lambda functions"
-  policy      = data.aws_iam_policy_document.update_functions.json
-}
-resource "aws_iam_role_policy_attachment" "update_functions" {
+# Policy to update other functions
+resource "aws_iam_role_policy_attachment" "deployer_update_functions" {
   role       = aws_iam_role.deployer.name
-  policy_arn = aws_iam_policy.update_functions.arn
-}
-data "aws_iam_policy_document" "update_functions" {
-  statement {
-    actions = ["lambda:UpdateFunctionCode"]
-
-    resources = [
-      aws_lambda_function.messages_post.arn,
-      aws_lambda_function.messages_options.arn
-    ]
-  }
+  policy_arn = var.policy_update_functions_arn
 }
 
-# Allow deployer function to fetch functions source code from S3
-resource "aws_iam_policy" "access_functions_source_code_bucket" {
-  name        = "${var.domain}-access_functions_source_code_bucket"
-  path        = "/"
-  description = "Read from bucket where source code of other functions is stored."
-
-  policy = data.aws_iam_policy_document.access_functions_source_code_bucket.json
-}
-resource "aws_iam_role_policy_attachment" "access_functions_source_code_bucket" {
+# Policy to access S3 bucket containing function's source code
+resource "aws_iam_role_policy_attachment" "deployer_access_functions_source_code_bucket" {
   role       = aws_iam_role.deployer.name
-  policy_arn = aws_iam_policy.access_functions_source_code_bucket.arn
+  policy_arn = var.policy_access_functions_source_code_bucket_arn
 }
-data "aws_iam_policy_document" "access_functions_source_code_bucket" {
-  statement {
-    actions   = ["s3:Get*"]
-    resources = ["${var.bucket_functions_src_arn}/*"]
-  }
+
+# Policy for CloudWatch logging
+resource "aws_iam_role_policy_attachment" "deployer_logging" {
+  role       = aws_iam_role.deployer.name
+  policy_arn = var.policy_logging_arn
 }
 
 # Log function output to CloudWatch
@@ -94,8 +71,4 @@ resource "aws_cloudwatch_log_group" "deployer_logging" {
   name              = "/aws/lambda/${aws_lambda_function.deployer.function_name}"
   retention_in_days = 14
 }
-# Attach policy for Cloudwatch logging
-resource "aws_iam_role_policy_attachment" "deployer_logs" {
-  role       = aws_iam_role.deployer.name
-  policy_arn = var.policy_logging_arn
-}
+

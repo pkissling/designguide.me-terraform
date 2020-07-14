@@ -32,3 +32,8 @@ output "bucket_incoming_mails_arn" {
   description = "ARN of the bucket containing incoming mails"
   value       = aws_s3_bucket.incoming_mails.arn
 }
+
+output "bucket_attachments_arn" {
+  description = "ARN of the bucket containing attachments"
+  value       = aws_s3_bucket.attachments.arn
+}

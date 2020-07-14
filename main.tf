@@ -60,6 +60,7 @@ module "function" {
   policy_send_email_arn                          = module.iam.policy_send_email_arn
   policy_update_functions_arn                    = module.iam.policy_update_functions_arn
   policy_access_functions_source_code_bucket_arn = module.iam.policy_access_functions_source_code_bucket_arn
+  policy_access_attachments_bucket_arn           = module.iam.policy_access_attachments_bucket_arn
   policy_access_incoming_mails_bucket_arn        = module.iam.policy_access_incoming_mails_bucket_arn
   aws_account_id                                 = module.utilities.aws_account_id
 }
@@ -69,6 +70,7 @@ module "gateway" {
   domain                             = var.domain
   certificate_arn                    = module.certificate.certificate_arn
   policy_logging_arn                 = module.iam.policy_logging_arn
+  lambda_attachments_post_invoke_arn = module.function.lambda_attachments_post_invoke_arn
   lambda_messages_options_invoke_arn = module.function.lambda_messages_options_invoke_arn
   lambda_messages_post_invoke_arn    = module.function.lambda_messages_post_invoke_arn
 
@@ -77,10 +79,12 @@ module "gateway" {
 module "iam" {
   source                      = "./iam"
   domain                      = var.domain
+  bucket_attachments_arn      = module.bucket.bucket_attachments_arn
   bucket_functions_src_arn    = module.bucket.bucket_functions_src_arn
   bucket_incoming_mails_arn   = module.bucket.bucket_incoming_mails_arn
   bucket_website_arn          = module.bucket.bucket_website_arn
   cdn_website_arn             = module.cdn.cdn_website_arn
+  lambda_attachments_post_arn = module.function.lambda_attachments_post_arn
   lambda_mail_forwarder_arn   = module.function.lambda_mail_forwarder_arn
   lambda_messages_options_arn = module.function.lambda_messages_options_arn
   lambda_messages_post_arn    = module.function.lambda_messages_post_arn

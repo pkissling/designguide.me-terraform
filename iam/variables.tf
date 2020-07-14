@@ -47,3 +47,13 @@ variable "bucket_incoming_mails_arn" {
   description = "ARN of the bucket containing incoming mails"
   type        = string
 }
+
+variable "bucket_attachments_arn" {
+  description = "ARN of the bucket containing attachments"
+  type        = string
+}
+
+variable "lambda_attachments_post_arn" {
+  description = "ARN of POST /attachments Lambda function"
+  type        = string
+}

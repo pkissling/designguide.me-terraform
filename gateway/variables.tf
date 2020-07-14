@@ -13,6 +13,11 @@ variable "lambda_messages_post_invoke_arn" {
   type        = string
 }
 
+variable "lambda_attachments_post_invoke_arn" {
+  description = "ARN to execute the POST /attachments Lambda function"
+  type        = string
+}
+
 variable "certificate_arn" {
   description = "ARN of the certificate"
   type        = string

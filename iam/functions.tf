@@ -13,7 +13,8 @@ data "aws_iam_policy_document" "update_functions" {
     resources = [
       var.lambda_mail_forwarder_arn,
       var.lambda_messages_options_arn,
-      var.lambda_messages_post_arn
+      var.lambda_messages_post_arn,
+      var.lambda_attachments_post_arn
     ]
   }
 }

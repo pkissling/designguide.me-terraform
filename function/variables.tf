@@ -62,3 +62,8 @@ variable "aws_account_id" {
   description = "The current AWS account ID"
   type        = string
 }
+
+variable "policy_access_attachments_bucket_arn" {
+  description = "ARN of policy to access bucket where attachments are stored"
+  type        = string
+}

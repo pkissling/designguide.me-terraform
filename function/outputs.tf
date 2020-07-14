@@ -22,3 +22,13 @@ output "lambda_mail_forwarder_arn" {
   description = "ARN of Lambda function to forward mails"
   value       = aws_lambda_function.mail_forwarder.arn
 }
+
+output "lambda_attachments_post_arn" {
+  description = "ARN of POST /attachments Lambda function"
+  value       = aws_lambda_function.attachments_post.arn
+}
+
+output "lambda_attachments_post_invoke_arn" {
+  description = "ARN to invoke POST /attachments Lambda function"
+  value       = aws_lambda_function.attachments_post.invoke_arn
+}

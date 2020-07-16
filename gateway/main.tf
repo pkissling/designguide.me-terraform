@@ -55,11 +55,19 @@ resource "aws_api_gateway_method" "messages_options" {
   authorization = "NONE"
 }
 
-# POST /messages
+# POST /attachments
 resource "aws_api_gateway_method" "attachments_post" {
   rest_api_id   = aws_api_gateway_rest_api.root.id
   resource_id   = aws_api_gateway_resource.attachments.id
   http_method   = "POST"
+  authorization = "NONE"
+}
+
+# OPTIONS /attachments
+resource "aws_api_gateway_method" "attachments_options" {
+  rest_api_id   = aws_api_gateway_rest_api.root.id
+  resource_id   = aws_api_gateway_resource.attachments.id
+  http_method   = "OPTIONS"
   authorization = "NONE"
 }
 
@@ -94,6 +102,17 @@ resource "aws_api_gateway_integration" "attachments_post" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.lambda_attachments_post_invoke_arn
+}
+
+# Link between OPTIONS /attachments and lambda function
+resource "aws_api_gateway_integration" "attachments_options" {
+  rest_api_id = aws_api_gateway_rest_api.root.id
+  resource_id = aws_api_gateway_method.attachments_options.resource_id
+  http_method = aws_api_gateway_method.attachments_options.http_method
+
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.lambda_cors_options_invoke_arn
 }
 
 # API stage v1

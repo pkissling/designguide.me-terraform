@@ -67,3 +67,8 @@ variable "policy_access_attachments_bucket_arn" {
   description = "ARN of policy to access bucket where attachments are stored"
   type        = string
 }
+
+variable "bucket_attachments_id" {
+  description = "ID of the bucket containing attachments"
+  type        = string
+}

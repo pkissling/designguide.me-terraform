@@ -51,6 +51,7 @@ module "function" {
   source                                         = "./function"
   domain                                         = var.domain
   mail_messages_to                               = var.mail_messages_to
+  bucket_attachments_id                          = module.bucket.bucket_attachments_id
   bucket_functions_src_arn                       = module.bucket.bucket_functions_src_arn
   bucket_functions_src_id                        = module.bucket.bucket_functions_src_id
   bucket_incoming_mails_arn                      = module.bucket.bucket_incoming_mails_arn

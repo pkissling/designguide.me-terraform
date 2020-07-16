@@ -7,6 +7,12 @@ resource "aws_lambda_function" "attachments_post" {
 
   s3_bucket = var.bucket_functions_src_id
   s3_key    = "${local.domain_name_lambda_regex}_attachments-post.zip"
+
+  environment {
+    variables = {
+      S3_BUCKET = var.bucket_attachments_id
+    }
+  }
 }
 
 # IAM policy for POST /attachments function

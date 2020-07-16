@@ -33,6 +33,11 @@ output "bucket_incoming_mails_arn" {
   value       = aws_s3_bucket.incoming_mails.arn
 }
 
+output "bucket_attachments_id" {
+  description = "ID of the bucket containing attachments"
+  value       = aws_s3_bucket.attachments.id
+}
+
 output "bucket_attachments_arn" {
   description = "ARN of the bucket containing attachments"
   value       = aws_s3_bucket.attachments.arn

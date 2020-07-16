@@ -8,14 +8,14 @@ output "lambda_messages_post_arn" {
   value       = aws_lambda_function.messages_post.arn
 }
 
-output "lambda_messages_options_invoke_arn" {
-  description = "ARN to invoke OPTIONS /messages Lambda function"
-  value       = aws_lambda_function.messages_options.invoke_arn
+output "lambda_cors_options_invoke_arn" {
+  description = "ARN to invoke CORS OPTIONS Lambda function"
+  value       = aws_lambda_function.cors_options.invoke_arn
 }
 
-output "lambda_messages_options_arn" {
-  description = "ARN of OPTIONS /messages Lambda function"
-  value       = aws_lambda_function.messages_options.arn
+output "lambda_cors_options_arn" {
+  description = "ARN of CORS OPTIONS Lambda function"
+  value       = aws_lambda_function.cors_options.arn
 }
 
 output "lambda_mail_forwarder_arn" {

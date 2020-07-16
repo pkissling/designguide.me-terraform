@@ -3,8 +3,8 @@ variable "domain" {
   type        = string
 }
 
-variable "lambda_messages_options_invoke_arn" {
-  description = "ARN to execute the OPTIONS /messages Lambda function"
+variable "lambda_cors_options_invoke_arn" {
+  description = "ARN to execute the CORS OPTIONS Lambda function"
   type        = string
 }
 

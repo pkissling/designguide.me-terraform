@@ -82,7 +82,7 @@ resource "aws_api_gateway_integration" "messages_options" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.lambda_messages_options_invoke_arn
+  uri                     = var.lambda_cors_options_invoke_arn
 }
 
 # Link between POST /attachments and lambda function
@@ -98,14 +98,6 @@ resource "aws_api_gateway_integration" "attachments_post" {
 
 # API stage v1
 resource "aws_api_gateway_deployment" "v1" {
-  triggers = {
-    redeployment = sha1(join(",", list(
-      jsonencode(aws_api_gateway_integration.messages_post),
-      jsonencode(aws_api_gateway_integration.messages_options),
-      jsonencode(aws_api_gateway_integration.attachments_post),
-    )))
-  }
-
   rest_api_id = aws_api_gateway_rest_api.root.id
   stage_name  = "v1"
 

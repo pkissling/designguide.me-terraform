@@ -71,7 +71,7 @@ module "gateway" {
   certificate_arn                    = module.certificate.certificate_arn
   policy_logging_arn                 = module.iam.policy_logging_arn
   lambda_attachments_post_invoke_arn = module.function.lambda_attachments_post_invoke_arn
-  lambda_messages_options_invoke_arn = module.function.lambda_messages_options_invoke_arn
+  lambda_cors_options_invoke_arn     = module.function.lambda_cors_options_invoke_arn
   lambda_messages_post_invoke_arn    = module.function.lambda_messages_post_invoke_arn
 
 }
@@ -85,8 +85,8 @@ module "iam" {
   bucket_website_arn          = module.bucket.bucket_website_arn
   cdn_website_arn             = module.cdn.cdn_website_arn
   lambda_attachments_post_arn = module.function.lambda_attachments_post_arn
+  lambda_cors_options_arn     = module.function.lambda_cors_options_arn
   lambda_mail_forwarder_arn   = module.function.lambda_mail_forwarder_arn
-  lambda_messages_options_arn = module.function.lambda_messages_options_arn
   lambda_messages_post_arn    = module.function.lambda_messages_post_arn
   mail_domain_identity_arn    = module.mail.mail_domain_identity_arn
   mail_email_identity_arn     = module.mail.mail_email_identity_arn

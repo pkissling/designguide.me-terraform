@@ -33,8 +33,8 @@ variable "lambda_messages_post_arn" {
   type        = string
 }
 
-variable "lambda_messages_options_arn" {
-  description = "ARN of OPTIONS /messages Lambda function"
+variable "lambda_cors_options_arn" {
+  description = "ARN of CORS OPTIONS Lambda function"
   type        = string
 }
 

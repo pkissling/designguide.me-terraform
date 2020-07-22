@@ -117,15 +117,17 @@ resource "aws_api_gateway_integration" "attachments_options" {
 
 # API stage v1
 resource "aws_api_gateway_deployment" "v1" {
-  depends_on = [
-    aws_api_gateway_integration.attachments_options,
-    aws_api_gateway_integration.attachments_post,
-    aws_api_gateway_integration.messages_options,
-    aws_api_gateway_integration.messages_post
-  ]
-
   rest_api_id = aws_api_gateway_rest_api.root.id
   stage_name  = "v1"
+
+  triggers = {
+    redeployment = sha1(join(",", list(
+      jsonencode(aws_api_gateway_integration.attachments_post),
+      jsonencode(aws_api_gateway_integration.attachments_options),
+      jsonencode(aws_api_gateway_integration.messages_post),
+      jsonencode(aws_api_gateway_integration.messages_options)
+    )))
+  }
 
   lifecycle {
     create_before_destroy = true

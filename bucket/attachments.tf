@@ -8,7 +8,8 @@ resource "aws_s3_bucket" "attachments" {
     allowed_methods = ["PUT"]
     allowed_origins = [
       "https://${var.domain}",
-      "https://www.${var.domain}"
+      "https://www.${var.domain}",
+      "http://localhost:8080"
     ]
     max_age_seconds = 3000
 

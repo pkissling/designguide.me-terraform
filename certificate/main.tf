@@ -10,7 +10,7 @@ resource "aws_acm_certificate" "root" {
 # This resource becomes available once the certificate was validated via DNS record in Route53
 resource "aws_acm_certificate_validation" "root" {
   certificate_arn         = aws_acm_certificate.root.arn
-  validation_record_fqdns = [aws_acm_certificate.root.domain_validation_options.0.resource_record_name]
+  validation_record_fqdns = [tolist(aws_acm_certificate.root.domain_validation_options)[0].resource_record_name]
 
   provider = aws.virginia
 }
